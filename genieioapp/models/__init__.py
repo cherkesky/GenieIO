@@ -1,1 +1,1 @@
-from .word import Word
+from .wisher import Wisher
