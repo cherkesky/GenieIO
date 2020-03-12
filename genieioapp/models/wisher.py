@@ -11,8 +11,8 @@ class Wisher(models.Model):
 
     # first_name, last_name, email, created_at, and is_active is all inherited from Django's user
 
-    # def __str__(self):
-    #     return f'{self.first_name} {self.last_name}'
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
 
     class Meta:
         ordering = (F('id').asc(nulls_last=True),)

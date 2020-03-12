@@ -23,7 +23,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         
 class Users(ViewSet):
 
-
     def retrieve(self, request, pk=None):
         try:
             user = User.objects.get(pk=pk)

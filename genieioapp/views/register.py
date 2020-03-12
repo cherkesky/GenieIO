@@ -72,6 +72,12 @@ def register_user(request):
     # Use the REST Framework's token generator on the new user account
     token = Token.objects.create(user=new_user)
 
+
+    ################################################################
+    ## INSERT A FUNCTION THAT WILL SAVE THE TOKEN TO MONGODB HERE ##
+    ################################################################
+    
+
     # Return the token to the client
     data = json.dumps({"token": token.key})
     return HttpResponse(data, content_type='application/json')
