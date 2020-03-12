@@ -61,13 +61,13 @@ def register_user(request):
         last_name=req_body['last_name']
     )
 
-    customer = Customer.objects.create(
+    wisher = Wisher.objects.create(
         user=new_user,
-        address=req_body["address"]
+        cid=req_body["cid"]
     )
 
     # Commit the user to the database by saving it
-    customer.save()
+    wisher.save()
 
     # Use the REST Framework's token generator on the new user account
     token = Token.objects.create(user=new_user)

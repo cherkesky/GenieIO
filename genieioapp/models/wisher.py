@@ -7,8 +7,7 @@ from django.db.models.expressions import F
 class Wisher(models.Model):
     '''docstring'''
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    address = models.CharField(max_length=25, null=True)
-    cid = models.IntegerField(max_length=11, null=True)
+    cid = models.IntegerField(null=True)
 
     # first_name, last_name, email, created_at, and is_active is all inherited from Django's user
 
