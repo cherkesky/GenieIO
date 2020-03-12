@@ -7,13 +7,12 @@ from django.db.models.expressions import F
 class Wisher(models.Model):
     '''docstring'''
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    address = models.CharField(max_length=25, null=True)
-    cid = models.IntegerField(max_length=11, null=True)
+    cid = models.IntegerField(null=True)
 
     # first_name, last_name, email, created_at, and is_active is all inherited from Django's user
 
-    # def __str__(self):
-    #     return f'{self.first_name} {self.last_name}'
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
 
     class Meta:
         ordering = (F('id').asc(nulls_last=True),)
