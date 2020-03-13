@@ -1,13 +1,13 @@
 from django.db import models
-from .categories import Categories
-from .locations import Locations
+from .category import Category
+from .location import Location
 from .wisher import Wisher
 
 class Wish(models.Model):
     wisher = models.ForeignKey('Wisher', on_delete=models.DO_NOTHING, null=True)
     wish_body = models.CharField(max_length=55)
-    category = models.ForeignKey('Categories', on_delete=models.DO_NOTHING)
-    location = models.ForeignKey('Locations', on_delete=models.DO_NOTHING)
+    category = models.ForeignKey('Category', on_delete=models.DO_NOTHING)
+    location = models.ForeignKey('Location', on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     
 

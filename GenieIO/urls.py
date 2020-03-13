@@ -19,12 +19,14 @@ from rest_framework import routers
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import obtain_auth_token
-from genieioapp.views import register_user, login_user, Wishes, Words
+from genieioapp.views import register_user, login_user
+from genieioapp.views import Users, Wishes, Words, Wishers
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'wishes', Wishes, 'wishes')
 router.register(r'words', Words, 'words')
-
+router.register(r'wishers', Wishers, 'wishers')
+router.register(r'users', Users, 'user')
 
 urlpatterns = [
     path('', include(router.urls)),

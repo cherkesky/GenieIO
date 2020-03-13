@@ -2,7 +2,7 @@ from django.db import models
 from .wish import Wish
 from .word import Word
 
-class Wishes_Words(models.Model):
+class Wish_Word(models.Model):
     # Objects will be hard-deleted, or soft deleted if other objects would have been deleted too.
 
     wish = models.ForeignKey('Wish', on_delete=models.DO_NOTHING)
@@ -10,7 +10,7 @@ class Wishes_Words(models.Model):
    
     
     class Meta:
-        verbose_name = ("Wishes_Word")
+        verbose_name = ("Wish_Word")
         verbose_name_plural = ("Wishes_Words")
 
     

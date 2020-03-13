@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Categories(models.Model):
+class Category(models.Model):
     # Objects will be hard-deleted, or soft deleted if other objects would have been deleted too.
 
     category = models.CharField(max_length=55)

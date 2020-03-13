@@ -4,6 +4,10 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from genieioapp.models import Wish
+from genieioapp.models import Category
+from genieioapp.models import Location
+from genieioapp.models import Wisher
+
 
 #from rest_framework.decorators import action
 
@@ -18,7 +22,7 @@ class WishesSerializer(serializers.HyperlinkedModelSerializer):
             view_name='wishes',
             lookup_field='id',
         )
-        fields = ('id', 'user', 'wish_body', 'category', 'location','created_at', )
+        fields = ('id', 'wisher', 'wish_body', 'category', 'location','created_at', )
         depth = 2
     
 class Wishes(ViewSet):
@@ -52,24 +56,24 @@ class Wishes(ViewSet):
         return Response(serializer.data)
 
 
-    def create(self, request):
-            """Handle POST operations
-            Returns:
-            Response -- JSON serialized Products instance
-            """
+    # def create(self, request):
+    #         """Handle POST operations
+    #         Returns:
+    #         Response -- JSON serialized Products instance
+    #         """
 
-            new_wish = Wishes()
-            new_wish.wisher_id = request.auth.user.wisher.id
-            new_wish.wish_body = request.data['wish_body']
-            new_wish.wish_body = request.data['category']
-            new_wish.wish_body = request.data['location']
-            new_wish.wish_body = request.data['wish_body']
+    #         new_wish = Wishes()
+    #         new_wish.wisher_id = request.auth.user.wisher.id
+    #         new_wish.wish_body = request.data['wish_body']
+    #         new_wish.wish_body = request.data['category']
+    #         new_wish.wish_body = request.data['location']
+    #         new_wish.wish_body = request.data['wish_body']
 
-            new_wish.save()
+    #         new_wish.save()
 
-            serializer = WishesSerializer(new_wish, context={'request': request})
+    #         serializer = WishesSerializer(new_wish, context={'request': request})
 
-            return Response(serializer.data)
+    #         return Response(serializer.data)
 
 
 
