@@ -4,3 +4,5 @@ from .user import Users
 from .wishes import Wishes
 from .words import Words
 from .wishers import Wishers
+from .categories import Categories
+from .locations import Locations

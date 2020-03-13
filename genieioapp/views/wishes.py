@@ -22,7 +22,8 @@ class WishesSerializer(serializers.HyperlinkedModelSerializer):
             view_name='wishes',
             lookup_field='id',
         )
-        fields = ('id', 'wisher', 'wish_body', 'category', 'location','created_at', )
+        # fields = ('id', 'wisher', 'wish_body', 'category', 'location','created_at', )
+        fields = ('id','category','wish_body','created_at', )
         depth = 2
     
 class Wishes(ViewSet):
@@ -31,7 +32,6 @@ class Wishes(ViewSet):
         Returns:
             Response -- JSON serialized customer instance
         """
-
         try:
             wish = Wish.objects.get(pk=pk)
             serializer = WishesSerializer(wish, context={'request': request})
