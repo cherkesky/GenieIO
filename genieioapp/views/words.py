@@ -4,7 +4,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from genieioapp.models import Words
+from genieioapp.models import Word
 
 class WordsSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for customers
@@ -12,7 +12,7 @@ class WordsSerializer(serializers.HyperlinkedModelSerializer):
         serializers.HyperlinkedModelSerializer
     """
     class Meta:
-        model = Words
+        model = Word
         url = serializers.HyperlinkedIdentityField(
             view_name='words',
             lookup_field='id',
@@ -29,7 +29,7 @@ class Words(ViewSet):
         """
 
         try:
-            word = Words.objects.get(pk=pk)
+            word = Word.objects.get(pk=pk)
             serializer = WordsSerializer(word, context={'request': request})
             return Response(serializer.data)
         except Exception as ex:
@@ -41,7 +41,7 @@ class Words(ViewSet):
             Response -- JSON serialized list of words
         """      
        
-        all_words = Words.objects.all()
+        all_words = Word.objects.all()
 
         serializer = WordsSerializer(
                     all_words,

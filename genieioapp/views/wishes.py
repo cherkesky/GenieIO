@@ -3,7 +3,8 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from genieioapp.models import Wishes
+from genieioapp.models import Wish
+
 #from rest_framework.decorators import action
 
 class WishesSerializer(serializers.HyperlinkedModelSerializer):
@@ -12,15 +13,14 @@ class WishesSerializer(serializers.HyperlinkedModelSerializer):
         serializers.HyperlinkedModelSerializer
     """
     class Meta:
-        model = Wishes
+        model = Wish
         url = serializers.HyperlinkedIdentityField(
             view_name='wishes',
             lookup_field='id',
         )
         fields = ('id', 'user', 'wish_body', 'category', 'location','created_at', )
         depth = 2
-        
-
+    
 class Wishes(ViewSet):
     def retrieve(self, request, pk=None):
         """Handle GET requests for single customer
@@ -29,7 +29,7 @@ class Wishes(ViewSet):
         """
 
         try:
-            wish = Wishes.objects.get(pk=pk)
+            wish = Wish.objects.get(pk=pk)
             serializer = WishesSerializer(wish, context={'request': request})
             return Response(serializer.data)
         except Exception as ex:
@@ -41,7 +41,7 @@ class Wishes(ViewSet):
             Response -- JSON serialized list of customers
         """      
        
-        all_wishes = Wishes.objects.all()
+        all_wishes = Wish.objects.all()
 
         serializer = WishesSerializer(
                     all_wishes,
