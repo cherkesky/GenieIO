@@ -18,7 +18,7 @@ class LocationsSerializer(serializers.HyperlinkedModelSerializer):
             lookup_field='id',
         )
         fields = ('id', 'location')
-        depth = 2
+        # depth = 2
         
 
 class Locations(ViewSet):
@@ -27,9 +27,8 @@ class Locations(ViewSet):
         Returns:
             Response -- JSON serialized word instance
         """
-
         try:
-            location = Locations.objects.get(pk=pk)
+            location = Location.objects.get(pk=pk)
             serializer = LocationsSerializer(location, context={'request': request})
             return Response(serializer.data)
         except Exception as ex:
