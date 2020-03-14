@@ -26,6 +26,8 @@ class WishesSerializer(serializers.HyperlinkedModelSerializer):
         depth = 2
     
 class Wishes(ViewSet):
+
+# handles GET one
     def retrieve(self, request, pk=None):
         """Handle GET requests for single customer
         Returns:
@@ -37,7 +39,8 @@ class Wishes(ViewSet):
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
-    
+
+# handles GET all    
     def list(self, request):
         """Handle GET requests to customers resource
         Returns:
@@ -54,7 +57,7 @@ class Wishes(ViewSet):
         serializer = WishesSerializer(all_wishes, many=True, context={'request': request})
         return Response(serializer.data)
 
-
+# handles POST
     def create(self, request):
             """Handle POST operations
             Returns:
@@ -73,7 +76,7 @@ class Wishes(ViewSet):
 
             return Response(serializer.data)
 
-     # handles DELETE
+# handles DELETE
     def destroy(self, request, pk=None):
         """Handle DELETE requests for a single product
 
@@ -94,7 +97,21 @@ class Wishes(ViewSet):
         except Exception as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+# handles PUT
+    def update(self, request, pk=None):
+        """Handle PUT requests for a product
 
+        Returns:
+        Response -- Empty body with 204 status code
+        """
+        wish_update = Wish.objects.get(pk=pk)      
+        wish_update.wisher_id = request.auth.user.wisher.id
+        wish_update.wish_body = request.data['wish_body']
+        wish_update.category_id = request.data['category']
+        wish_update.location_id = request.data['location']
+        
+        wish_update.save()
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
 
 
 
