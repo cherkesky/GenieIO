@@ -4,7 +4,11 @@ from nltk.corpus import stopwords, state_union
 from nltk.stem import PorterStemmer
 from nltk.tokenize import PunktSentenceTokenizer
 
+print ("*************************************************************")
+print ("*************             ORIGINAL               ************")
+print ("*************************************************************")
 EXAMPLE_TEXT = "I want to finish my capstone successfully. On time."
+print (EXAMPLE_TEXT)
 
 # Tokenizing and removing stop words
 print ("*************************************************************")
@@ -23,7 +27,7 @@ print(filtered_sentence)
 
 # Stemming
 print ("*************************************************************")
-print ("*************             STRMMIMG               ************")
+print ("*************             STEMMIMG               ************")
 print ("*************************************************************")
 
 ps = PorterStemmer()
