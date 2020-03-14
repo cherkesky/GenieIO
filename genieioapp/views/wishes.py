@@ -7,8 +7,6 @@ from genieioapp.models import Wish
 from genieioapp.models import Category
 from genieioapp.models import Location
 from genieioapp.models import Wisher
-
-
 #from rest_framework.decorators import action
 
 class WishesSerializer(serializers.HyperlinkedModelSerializer):
@@ -72,8 +70,11 @@ class Wishes(ViewSet):
 
             new_wish.save()
 
-            serializer = WishesSerializer(new_wish, context={'request': request})
+        #####################################################################
+        ## INSERT LOGIC FOR NTLK AND CREATING RELEVANT WORD TABLES HERE    ##
+        #####################################################################
 
+            serializer = WishesSerializer(new_wish, context={'request': request})
             return Response(serializer.data)
 
 # handles DELETE
