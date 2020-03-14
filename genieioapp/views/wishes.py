@@ -55,24 +55,23 @@ class Wishes(ViewSet):
         return Response(serializer.data)
 
 
-    # def create(self, request):
-    #         """Handle POST operations
-    #         Returns:
-    #         Response -- JSON serialized Products instance
-    #         """
+    def create(self, request):
+            """Handle POST operations
+            Returns:
+            Response -- JSON serialized Products instance
+            """
 
-    #         new_wish = Wishes()
-    #         new_wish.wisher_id = request.auth.user.wisher.id
-    #         new_wish.wish_body = request.data['wish_body']
-    #         new_wish.wish_body = request.data['category']
-    #         new_wish.wish_body = request.data['location']
-    #         new_wish.wish_body = request.data['wish_body']
+            new_wish = Wish()
+            new_wish.wisher_id = request.auth.user.wisher.id
+            new_wish.wish_body = request.data['wish_body']
+            new_wish.category_id = request.data['category']
+            new_wish.location_id = request.data['location']
 
-    #         new_wish.save()
+            new_wish.save()
 
-    #         serializer = WishesSerializer(new_wish, context={'request': request})
+            serializer = WishesSerializer(new_wish, context={'request': request})
 
-    #         return Response(serializer.data)
+            return Response(serializer.data)
 
 
 
