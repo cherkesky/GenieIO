@@ -73,7 +73,26 @@ class Wishes(ViewSet):
 
             return Response(serializer.data)
 
+     # handles DELETE
+    def destroy(self, request, pk=None):
+        """Handle DELETE requests for a single product
 
+        Returns:
+            Response -- 200, 404, or 500 status code
+        """
+        try:
+            wish_del = Wish.objects.get(pk=pk)
+            # restrict users to only being able to delete wishes they've created
+            if wish_del.wisher_id == request.auth.user.wisher.id:
+                wish_del.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        except wish_del.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 
