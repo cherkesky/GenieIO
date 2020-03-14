@@ -4,11 +4,10 @@ from nltk.corpus import stopwords, state_union
 from nltk.stem import PorterStemmer
 from nltk.tokenize import PunktSentenceTokenizer
 
-SENT_WISH = "I wish for good health"
+SENT_WISH = "I wish to finish my capstone on time"
 train_text = state_union.raw("2005-GWBush.txt")
 filtered_sentence = []
 stemmed_sentence = []
-counter=0
 
 stop_words = set(stopwords.words('english'))
 word_tokens = word_tokenize(SENT_WISH)
@@ -22,17 +21,16 @@ for w in filtered_sentence:
 sample_text=SENT_WISH
 custom_sent_tokenizer = PunktSentenceTokenizer(train_text)
 tokenized = custom_sent_tokenizer.tokenize(sample_text)
-# print ("TOKENIZED:", tokenized)
 for i in tokenized[:5]:
     words = nltk.word_tokenize(i)
     tagged = nltk.pos_tag(words)
 
-# print ("TAGGED:", tagged)
+print ("TAGGED:", tagged)
 
-for j in tagged:
-    if j[1]=="NN":
-        print (j[0])
-    counter=+1
+for noun in tagged:
+    if noun[1]=="NN" or noun[1]=="NNS" or noun[1]=="VBG" or noun[1]=="NNP":
+        print (noun[0])
+        
 
 
 
