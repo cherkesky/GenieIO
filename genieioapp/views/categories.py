@@ -14,7 +14,8 @@ class CategoriesSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Category
         url = serializers.HyperlinkedIdentityField(
-            view_name='categories',
+            # view_name='categories',
+            view_name='category',
             lookup_field='id',
         )
         fields = ('id', 'category')

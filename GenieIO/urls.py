@@ -24,11 +24,11 @@ from genieioapp.views import Users, Wishes, Words, Wishers, Categories, Location
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'users', Users, 'user')
-router.register(r'wishes', Wishes, 'wishes')
-router.register(r'words', Words, 'words')
-router.register(r'wishers', Wishers, 'wishers')
-router.register(r'categories', Categories, 'categories')
-router.register(r'locations', Locations, 'locations')
+router.register(r'wishes', Wishes, 'wish')
+router.register(r'words', Words, 'word')
+router.register(r'wishers', Wishers, 'wisher')
+router.register(r'categories', Categories, 'category')
+router.register(r'locations', Locations, 'location')
 
 
 urlpatterns = [

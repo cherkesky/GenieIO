@@ -19,11 +19,10 @@ class WishesSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Wish
         url = serializers.HyperlinkedIdentityField(
-            view_name='wishes',
+            view_name='wish',
             lookup_field='id',
         )
-        # fields = ('id', 'wish_body', 'wisher', 'category', 'location','created_at')
-        fields = ('id', 'wish_body','created_at','category')
+        fields = ('id', 'wish_body', 'wisher', 'category', 'location','created_at')
         depth = 2
     
 class Wishes(ViewSet):

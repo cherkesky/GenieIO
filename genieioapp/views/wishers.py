@@ -16,7 +16,7 @@ class WisherSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Wisher
         url = serializers.HyperlinkedIdentityField(
-            view_name='wishers',
+            view_name='wisher',
             lookup_field='id',
         )
         fields = ('id', 'user', 'cid')

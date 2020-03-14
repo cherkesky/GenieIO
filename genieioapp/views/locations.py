@@ -14,7 +14,7 @@ class LocationsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Location
         url = serializers.HyperlinkedIdentityField(
-            view_name='locations',
+            view_name='location',
             lookup_field='id',
         )
         fields = ('id', 'location')

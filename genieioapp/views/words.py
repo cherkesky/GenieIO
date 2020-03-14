@@ -14,7 +14,7 @@ class WordsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Word
         url = serializers.HyperlinkedIdentityField(
-            view_name='words',
+            view_name='word',
             lookup_field='id',
         )
         fields = ('id', 'word')
