@@ -22,6 +22,8 @@ class WordsSerializer(serializers.HyperlinkedModelSerializer):
         
 
 class Words(ViewSet):
+
+# handles GET one
     def retrieve(self, request, pk=None):
         """Handle GET requests for single word
         Returns:
@@ -34,7 +36,8 @@ class Words(ViewSet):
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
-    
+            
+# handles GET all
     def list(self, request):
         """Handle GET requests to words resource
         Returns:
@@ -50,6 +53,26 @@ class Words(ViewSet):
                 )
         serializer = WordsSerializer(all_words, many=True, context={'request': request})
         return Response(serializer.data)
+
+# handles POST
+    def create(self, request):
+            """Handle POST operations
+            Returns:
+            Response -- JSON serialized Products instance
+            """
+
+            new_word = Word()
+            new_word.word= request.data['word']
+
+            new_word.save()
+
+            serializer = WordsSerializer(new_word, context={'request': request})
+            return Response(serializer.data)
+
+   
+
+
+
 
 
    

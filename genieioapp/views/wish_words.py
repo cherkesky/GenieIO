@@ -24,6 +24,8 @@ class WishWordsSerializer(serializers.HyperlinkedModelSerializer):
         
 
 class Wish_Words(ViewSet):
+
+# handles GET one
     def retrieve(self, request, pk=None):
         """Handle GET requests for single word
         Returns:
@@ -36,7 +38,8 @@ class Wish_Words(ViewSet):
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
-    
+
+# handles GET all
     def list(self, request):
         """Handle GET requests to words resource
         Returns:
@@ -53,6 +56,21 @@ class Wish_Words(ViewSet):
         serializer = WishWordsSerializer(all_wish_words, many=True, context={'request': request})
         return Response(serializer.data)
 
+# handles POST
+    def create(self, request):
+            """Handle POST operations
+            Returns:
+            Response -- JSON serialized Products instance
+            """
+
+            new_wish_words = Wish_Word()
+            new_wish_words.wish_id = request.data['wish']
+            new_wish_words.word_id = request.data['word']
+
+            new_wish_words.save()
+
+            serializer = WishWordsSerializer(new_wish_words, context={'request': request})
+            return Response(serializer.data)
 
    
 
