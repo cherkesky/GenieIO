@@ -6,3 +6,4 @@ from .words import Words
 from .wishers import Wishers
 from .categories import Categories
 from .locations import Locations
+from .grants import Grants
