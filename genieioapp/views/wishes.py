@@ -7,7 +7,10 @@ from genieioapp.models import Wish
 from genieioapp.models import Category
 from genieioapp.models import Location
 from genieioapp.models import Wisher
-#from rest_framework.decorators import action
+from genieioapp.models import Word
+from genieioapp.models import Wish_Word
+# from .words import Words
+from genieioapp.ntlk import harvest 
 
 class WishesSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for customers
@@ -24,6 +27,7 @@ class WishesSerializer(serializers.HyperlinkedModelSerializer):
         depth = 2
     
 class Wishes(ViewSet):
+    ntlk_wishes=[]
 
 # handles GET one
     def retrieve(self, request, pk=None):
@@ -61,19 +65,41 @@ class Wishes(ViewSet):
             Returns:
             Response -- JSON serialized Products instance
             """
-
             new_wish = Wish()
+            wish_for_harvesting = ""
             new_wish.wisher_id = request.auth.user.wisher.id
             new_wish.wish_body = request.data['wish_body']
             new_wish.category_id = request.data['category']
             new_wish.location_id = request.data['location']
-
             new_wish.save()
+        #  NLTK for getting all the relevant keywords
+            ntlk_wishes = harvest(new_wish.wish_body)
+            print ("NLTK", ntlk_wishes)
+        # Iterating through the results and building the Word and Wish_Word tables
+            for ntlk_wish in ntlk_wishes:
+                try:
+                     response = Word.objects.filter(word=ntlk_wish)
+                     if len(response) > 0:
+                         print ("The word",ntlk_wish, "been found in index:", response[0].id)
+                         new_wish_word = Wish_Word()
+                         new_wish_word.wish_id = new_wish.pk
+                         new_wish_word.word_id = response[0].id
+                         new_wish_word.save()
 
-        #####################################################################
-        ## INSERT LOGIC FOR NTLK AND CREATING RELEVANT WORD TABLES HERE    ##
-        #####################################################################
-
+                     else:
+                          # building the words table for missing words
+                          print ("The word",ntlk_wish, "has not been found")
+                          new_word = Word()
+                          new_word.word= ntlk_wish
+                          new_word.save() 
+                          print ("The word",ntlk_wish, "been added to the Word table")
+                          new_wish_word = Wish_Word()
+                          new_wish_word.wish_id = new_wish.pk
+                          new_wish_word.word_id = new_word.pk
+                          new_wish_word.save()
+                except Exception as ex:
+                     return HttpResponseServerError(ex)
+                
             serializer = WishesSerializer(new_wish, context={'request': request})
             return Response(serializer.data)
 
