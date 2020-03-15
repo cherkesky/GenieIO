@@ -7,6 +7,10 @@ from genieioapp.models import Wish
 from genieioapp.models import Category
 from genieioapp.models import Location
 from genieioapp.models import Wisher
+from genieioapp.models import Word
+from .words import Words
+from genieioapp.ntlk import harvest 
+
 #from rest_framework.decorators import action
 
 class WishesSerializer(serializers.HyperlinkedModelSerializer):
@@ -24,6 +28,7 @@ class WishesSerializer(serializers.HyperlinkedModelSerializer):
         depth = 2
     
 class Wishes(ViewSet):
+    ntlk_wishes=[]
 
 # handles GET one
     def retrieve(self, request, pk=None):
@@ -63,17 +68,31 @@ class Wishes(ViewSet):
             """
 
             new_wish = Wish()
+            wish_for_harvesting = ""
             new_wish.wisher_id = request.auth.user.wisher.id
             new_wish.wish_body = request.data['wish_body']
             new_wish.category_id = request.data['category']
             new_wish.location_id = request.data['location']
-
             new_wish.save()
 
         #####################################################################
-        ## INSERT LOGIC FOR NTLK AND CREATING RELEVANT WORD TABLES HERE    ##
+        ##  INSERT LOGIC FOR NTLK AND CREATING RELEVANT WORD TABLES HERE   ##
         #####################################################################
+            ntlk_wishes = harvest(new_wish.wish_body)
 
+            print ("NLTK", ntlk_wishes)
+            
+            for ntlk_wish in ntlk_wishes:
+                try:
+                     response = Word.objects.filter(word=ntlk_wish)
+                     if len(response) > 0:
+                         print ("The word",ntlk_wish, "been found in index:", response[0].id)
+                     else: print ("The word",ntlk_wish, "has not been found")
+                except Exception as ex:
+                     return HttpResponseServerError(ex)
+
+        #####################################################################
+                
             serializer = WishesSerializer(new_wish, context={'request': request})
             return Response(serializer.data)
 

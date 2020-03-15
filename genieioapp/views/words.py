@@ -42,17 +42,23 @@ class Words(ViewSet):
         """Handle GET requests to words resource
         Returns:
             Response -- JSON serialized list of words
-        """      
-       
-        all_words = Word.objects.all()
+        """ 
+        # print("REQUEST",request)
+        nltk = self.request.query_params.get('nltk', None)
+    
+        if nltk is not None:
+            all_words = Word.objects.filter(word=nltk)
+        else: 
+            all_words = Word.objects.all()
 
         serializer = WordsSerializer(
                     all_words,
                     many=True,
                     context={'request': request}
                 )
-        serializer = WordsSerializer(all_words, many=True, context={'request': request})
+        print ("SERIALIZER", serializer.data)
         return Response(serializer.data)
+
 
 # handles POST
     def create(self, request):
