@@ -1,7 +1,6 @@
 import nltk
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords, state_union
-from nltk.stem import PorterStemmer
 from nltk.tokenize import PunktSentenceTokenizer
 
 
@@ -19,10 +18,6 @@ def harvest(wish_for_harvesting):
     word_tokens = word_tokenize(SENT_WISH)
 
     filtered_sentence = [w for w in word_tokens if not w in stop_words]
-
-    # ps = PorterStemmer()
-    # for w in filtered_sentence:
-    #         stemmed_sentence.append(ps.stem(w))
 
     sample_text=SENT_WISH
     custom_sent_tokenizer = PunktSentenceTokenizer(train_text)
