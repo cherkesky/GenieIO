@@ -19,7 +19,7 @@ class GrantsSerializer(serializers.HyperlinkedModelSerializer):
             view_name='grant',
             lookup_field='id',
         )
-        fields = ('id', 'wisher', 'wish','memo', 'status','created_at')
+        fields = ('id', 'granter', 'wish','memo', 'status','created_at')
         depth = 1
     
 class Grants(ViewSet):
@@ -62,7 +62,7 @@ class Grants(ViewSet):
             """
 
             new_grant = Grant()
-            new_grant.wisher_id = request.auth.user.wisher.id
+            new_grant.granter_id = request.auth.user.wisher.id
             new_grant.wish_id = request.data['wish_id']
             new_grant.memo = request.data['memo']
             new_grant.status = request.data['status']
