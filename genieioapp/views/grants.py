@@ -63,9 +63,9 @@ class Grants(ViewSet):
 
             new_grant = Grant()
             new_grant.wisher_id = request.auth.user.wisher.id
-            new_grant.wish_body = request.data['wish_body']
-            new_grant.category_id = request.data['memo']
-            new_grant.location_id = request.data['status']
+            new_grant.wish_id = request.data['wish_id']
+            new_grant.memo = request.data['memo']
+            new_grant.status = request.data['status']
 
             new_grant.save()
 
