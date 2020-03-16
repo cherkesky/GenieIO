@@ -49,8 +49,13 @@ class Wishes(ViewSet):
             Response -- JSON serialized list of customers
         """      
         search = self.request.query_params.get('search')
+        latest = self.request.query_params.get('latest')
+
         if search:
          all_wishes = Wish.objects.filter(wish_body__contains=search)
+        elif latest:
+          all_wishes = Wish.objects.order_by('-created_at')[0:int(latest)]
+
         else:
          all_wishes = Wish.objects.all()
 
