@@ -48,8 +48,11 @@ class Wishes(ViewSet):
         Returns:
             Response -- JSON serialized list of customers
         """      
-       
-        all_wishes = Wish.objects.all()
+        search = self.request.query_params.get('search')
+        if search:
+         all_wishes = Wish.objects.filter(wish_body__contains=search)
+        else:
+         all_wishes = Wish.objects.all()
 
         serializer = WishesSerializer(
                     all_wishes,
