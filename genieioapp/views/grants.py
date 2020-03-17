@@ -43,8 +43,14 @@ class Grants(ViewSet):
         Returns:
             Response -- JSON serialized list of customers
         """      
-       
-        all_grants = Grant.objects.all()
+        by_wish = self.request.query_params.get('by_wish')
+
+        if by_wish:
+        #   all_grants = Grant.objects.select_related('wish__wisher').get(id=1)
+            all_grants = Grant.objects.all().prefetch_related('wish')
+
+        else:
+          all_grants = Grant.objects.all()
 
         serializer = GrantsSerializer(
                     all_grants,
