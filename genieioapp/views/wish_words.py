@@ -7,6 +7,7 @@ from rest_framework import status
 from genieioapp.models import Wish_Word
 from genieioapp.models import Wish
 from genieioapp.models import Word
+from django.db.models import Count
 
 class WishWordsSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for customers
@@ -20,11 +21,10 @@ class WishWordsSerializer(serializers.HyperlinkedModelSerializer):
             lookup_field='id',
         )
         fields = ('id', 'wish', 'word')
-        depth = 1
+        # depth = 1
         
 
 class Wish_Words(ViewSet):
-
 # handles GET one
     def retrieve(self, request, pk=None):
         """Handle GET requests for single word
@@ -45,8 +45,13 @@ class Wish_Words(ViewSet):
         Returns:
             Response -- JSON serialized list of words
         """      
-       
-        all_wish_words = Wish_Word.objects.all()
+        word_values = self.request.query_params.get('word_values')
+
+        if word_values:
+            all_wish_words = Wish_Word.objects.raw(" SELECT 1 as id, word.word, COUNT(ww.word_id) FROM genieioapp_wish_word as ww JOIN genieioapp_word as word ON word.id = ww.word_id GROUP BY ww.word_id;")
+            # all_wish_words = Wish_Word.objects.annotate(Count('word'))
+        else:
+            all_wish_words = Wish_Word.objects.all()
 
         serializer = WishWordsSerializer(
                     all_wish_words,
