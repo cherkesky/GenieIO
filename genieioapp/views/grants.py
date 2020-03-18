@@ -21,7 +21,7 @@ class GrantsSerializer(serializers.HyperlinkedModelSerializer):
             lookup_field='id',
         )
         fields = ('id', 'granter', 'wish', 'memo', 'status', 'created_at')
-        depth = 1
+        depth = 2
 
 
 class Grants(ViewSet):
@@ -48,7 +48,7 @@ class Grants(ViewSet):
         by_wish = self.request.query_params.get('by_wish')
         relevant_wish = self.request.user.id
         if by_wish:
-            all_grants = Grant.objects.raw(f' SELECT g.id, g.memo, g.status, g.wish_id, g.granter_id, w.wisher_id FROM genieioapp_grant AS g JOIN genieioapp_wish AS w ON g.wish_id = w.id WHERE w.wisher_id={relevant_wish}; ')
+            all_grants = Grant.objects.raw(f' SELECT g.id, g.memo, g.status, g.wish_id, g.granter_id, w.wisher_id, u.cid FROM genieioapp_grant AS g JOIN genieioapp_wish AS w ON g.wish_id = w.id JOIN genieioapp_wisher as u on w.wisher_id = u.id WHERE w.wisher_id={relevant_wish}; ')
 
         else:
             all_grants = Grant.objects.all()
