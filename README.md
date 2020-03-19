@@ -1,5 +1,5 @@
 
-![GenieIO](https://raw.githubusercontent.com/cherkesky/genioe/master/assets/logo.png)
+![GenieIO](https://raw.githubusercontent.com/cherkesky/genieio/master/assets/logo.png)
 
 ### by Guy Cherkesky | [LinkedIn](http://linkedin.com/in/cherkesky) | [Website](http://cherkesky.com)
 
