@@ -20,7 +20,7 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import obtain_auth_token
 from genieioapp.views import register_user, login_user
-from genieioapp.views import Users, Wishes, Words, Wishers, Categories, Locations, Grants, Wish_Words
+from genieioapp.views import Users, Wishes, Words, Wishers, Categories, Locations, Grants, Wish_Words, Words_Counter
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'users', Users, 'user')
@@ -31,6 +31,7 @@ router.register(r'words', Words, 'word')
 router.register(r'wish_words', Wish_Words, 'wish_word')
 router.register(r'categories', Categories, 'category')
 router.register(r'locations', Locations, 'location')
+router.register(r'words_counter', Words_Counter, 'word_counter')
 
 
 urlpatterns = [

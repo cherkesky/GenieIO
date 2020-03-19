@@ -9,7 +9,6 @@ from genieioapp.models import Location
 from genieioapp.models import Wisher
 from genieioapp.models import Word
 from genieioapp.models import Wish_Word
-# from .words import Words
 from genieioapp.ntlk import harvest 
 
 class WishesSerializer(serializers.HyperlinkedModelSerializer):
@@ -49,10 +48,17 @@ class Wishes(ViewSet):
             Response -- JSON serialized list of customers
         """      
         search = self.request.query_params.get('search')
+        latest = self.request.query_params.get('latest')
+        my_wishes = self.request.query_params.get('my_wishes')
+
         if search:
-         all_wishes = Wish.objects.filter(wish_body__contains=search)
+          all_wishes = Wish.objects.filter(wish_body__contains=search)
+        elif latest:
+          all_wishes = Wish.objects.order_by('-created_at')[0:int(latest)]
+        elif my_wishes:
+          all_wishes = Wish.objects.filter(wisher_id=self.request.user.id)
         else:
-         all_wishes = Wish.objects.all()
+          all_wishes = Wish.objects.all()
 
         serializer = WishesSerializer(
                     all_wishes,

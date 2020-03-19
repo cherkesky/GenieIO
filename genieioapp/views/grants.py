@@ -8,8 +8,9 @@ from genieioapp.models import Wish
 from genieioapp.models import Wisher
 #from rest_framework.decorators import action
 
+
 class GrantsSerializer(serializers.HyperlinkedModelSerializer):
-    """JSON serializer for customers
+    """JSON serializer for grants
     Arguments:
         serializers.HyperlinkedModelSerializer
     """
@@ -19,16 +20,17 @@ class GrantsSerializer(serializers.HyperlinkedModelSerializer):
             view_name='grant',
             lookup_field='id',
         )
-        fields = ('id', 'wisher', 'wish','memo', 'status','created_at')
-        depth = 1
-    
+        fields = ('id', 'granter', 'wish', 'memo', 'status', 'created_at')
+        depth = 2
+
+
 class Grants(ViewSet):
 
-# handles GET one
+    # handles GET one
     def retrieve(self, request, pk=None):
-        """Handle GET requests for single customer
+        """Handle GET requests for single grants
         Returns:
-            Response -- JSON serialized customer instance
+            Response -- JSON serialized grants instance
         """
         try:
             grant = Grant.objects.get(pk=pk)
@@ -37,44 +39,50 @@ class Grants(ViewSet):
         except Exception as ex:
             return HttpResponseServerError(ex)
 
-# handles GET all    
+# handles GET all
     def list(self, request):
-        """Handle GET requests to customers resource
+        """Handle GET requests to grants resource
         Returns:
-            Response -- JSON serialized list of customers
-        """      
-       
-        all_grants = Grant.objects.all()
+            Response -- JSON serialized list of grants
+        """
+        by_wish = self.request.query_params.get('by_wish')
+        relevant_wish = self.request.user.id
+        if by_wish:
+            all_grants = Grant.objects.raw(f' SELECT g.id, g.memo, g.status, g.wish_id, g.granter_id, w.wisher_id, u.cid FROM genieioapp_grant AS g JOIN genieioapp_wish AS w ON g.wish_id = w.id JOIN genieioapp_wisher as u on w.wisher_id = u.id WHERE w.wisher_id={relevant_wish}; ')
+
+        else:
+            all_grants = Grant.objects.all()
 
         serializer = GrantsSerializer(
-                    all_grants,
-                    many=True,
-                    context={'request': request}
-                )
-        serializer = GrantsSerializer(all_grants, many=True, context={'request': request})
+            all_grants,
+            many=True,
+            context={'request': request}
+        )
+        serializer = GrantsSerializer(
+            all_grants, many=True, context={'request': request})
         return Response(serializer.data)
 
 # handles POST
     def create(self, request):
-            """Handle POST operations
-            Returns:
-            Response -- JSON serialized Products instance
-            """
+        """Handle POST operations
+        Returns:
+        Response -- JSON serialized grant instance
+        """
 
-            new_grant = Grant()
-            new_grant.wisher_id = request.auth.user.wisher.id
-            new_grant.wish_body = request.data['wish_body']
-            new_grant.category_id = request.data['memo']
-            new_grant.location_id = request.data['status']
+        new_grant = Grant()
+        new_grant.granter_id = request.auth.user.wisher.id
+        new_grant.wish_id = request.data['wish_id']
+        new_grant.memo = request.data['memo']
+        new_grant.status = request.data['status']
 
-            new_grant.save()
+        new_grant.save()
 
-            serializer = GrantsSerializer(new_grant, context={'request': request})
-            return Response(serializer.data)
+        serializer = GrantsSerializer(new_grant, context={'request': request})
+        return Response(serializer.data)
 
 # handles DELETE
     def destroy(self, request, pk=None):
-        """Handle DELETE requests for a single product
+        """Handle DELETE requests for a single grant
 
         Returns:
             Response -- 200, 404, or 500 status code
@@ -95,16 +103,30 @@ class Grants(ViewSet):
 
 # handles PUT
     def update(self, request, pk=None):
-        """Handle PUT requests for a product
+        """Handle PUT requests for a grant
 
         Returns:
         Response -- Empty body with 204 status code
         """
-        grant_update = Grant.objects.get(pk=pk)      
+        grant_update = Grant.objects.get(pk=pk)
         grant_update.wisher_id = request.auth.user.wisher.id
         grant_update.wish_id = request.data['wish']
         grant_update.memo = request.data['memo']
         grant_update.status = request.data['status']
-        
+
         grant_update.save()
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+# handles PATCH
+
+    def partial_update(self, request, pk=None):
+        """Handle PATCH requests for a grant
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+        grant_update = Grant.objects.get(pk=pk)
+        grant_update.status = request.data['status']
+
+        grant_update.save()
+
         return Response({}, status=status.HTTP_204_NO_CONTENT)
