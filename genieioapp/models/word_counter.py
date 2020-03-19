@@ -3,7 +3,7 @@ from django.db import models
 
 class Word_Counter(models.Model):
 
-    word = models.CharField(max_length=55)
+    text = models.CharField(max_length=55)
     value = models.IntegerField()
   
     class Meta:

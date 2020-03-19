@@ -8,7 +8,7 @@ from genieioapp.models import Word_Counter
 # from genieioapp.models import Wish_Word
 # from django.db.models import Count
 
-class WordCounterSerializer(serializers.HyperlinkedModelSerializer):
+class WordCounterSerializer(serializers.HyperlinkedModelSerializer): 
     """JSON serializer for customers
     Arguments:
         serializers.HyperlinkedModelSerializer
@@ -19,7 +19,7 @@ class WordCounterSerializer(serializers.HyperlinkedModelSerializer):
             view_name='word_counter',
             lookup_field='id',
         )
-        fields = ('id', 'word', 'value')
+        fields = ('id', 'text', 'value')
         
 
 class Words_Counter(ViewSet):
@@ -48,7 +48,7 @@ class Words_Counter(ViewSet):
         word_values = self.request.query_params.get('word_values')
 
         if word_values:
-            all_wish_words = Word_Counter.objects.raw(" SELECT 1 as id, word.word, COUNT(ww.word_id) as 'value' FROM genieioapp_wish_word as ww JOIN genieioapp_word as word ON word.id = ww.word_id GROUP BY ww.word_id;")
+            all_wish_words = Word_Counter.objects.raw(" SELECT 1 as id, word.word as 'text', COUNT(ww.word_id) as 'value' FROM genieioapp_wish_word as ww JOIN genieioapp_word as word ON word.id = ww.word_id GROUP BY ww.word_id;")
             # all_wish_words = Wish_Word.objects.annotate(Count('word'))
         else:
             all_wish_words = Word_Counter.objects.all()
@@ -58,7 +58,6 @@ class Words_Counter(ViewSet):
                     many=True,
                     context={'request': request}
                 )
-        print ("SERIALIZER", serializer.data)
         return Response(serializer.data)
 
 
