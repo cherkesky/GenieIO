@@ -52,7 +52,8 @@ class Wishes(ViewSet):
         my_wishes = self.request.query_params.get('my_wishes')
 
         if search:
-          all_wishes = Wish.objects.filter(wish_body__contains=search)
+         all_wishes = Wish.objects.filter(wish_body__contains=search).exclude(wisher_id=self.request.user.id)
+
         elif latest:
           all_wishes = Wish.objects.order_by('-created_at')[0:int(latest)]
         elif my_wishes:
