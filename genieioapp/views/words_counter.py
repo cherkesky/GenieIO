@@ -7,6 +7,8 @@ from rest_framework import status
 from genieioapp.models import Word_Counter
 # from genieioapp.models import Wish_Word
 # from django.db.models import Count
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 class WordCounterSerializer(serializers.HyperlinkedModelSerializer): 
     """JSON serializer for customers
@@ -25,6 +27,7 @@ class WordCounterSerializer(serializers.HyperlinkedModelSerializer):
 class Words_Counter(ViewSet):
 
 # handles GET one
+    @method_decorator(csrf_exempt)
     def retrieve(self, request, pk=None):
         """Handle GET requests for single word
         Returns:
@@ -39,6 +42,7 @@ class Words_Counter(ViewSet):
             return HttpResponseServerError(ex)
             
 # handles GET all
+    @method_decorator(csrf_exempt)
     def list(self, request):
         """Handle GET requests to words resource
         Returns:
