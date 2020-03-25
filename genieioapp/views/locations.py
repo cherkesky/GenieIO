@@ -39,8 +39,12 @@ class Locations(ViewSet):
         Returns:
             Response -- JSON serialized list of words
         """      
-       
-        all_locations = Location.objects.all()
+        get_state = self.request.query_params.get('get_state')
+
+        if get_state:
+            all_locations = Location.objects.filter(location__contains=get_state)
+        else:
+            all_locations = Location.objects.all()
 
         serializer = LocationsSerializer(
                     all_locations,
