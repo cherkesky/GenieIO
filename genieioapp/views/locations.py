@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from genieioapp.models import Location
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 class LocationsSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for customers
@@ -20,8 +22,8 @@ class LocationsSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'location')
         # depth = 2
         
-
 class Locations(ViewSet):
+    @method_decorator(csrf_exempt)
     def retrieve(self, request, pk=None):
         """Handle GET requests for single word
         Returns:
@@ -33,7 +35,7 @@ class Locations(ViewSet):
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
-    
+    @method_decorator(csrf_exempt)
     def list(self, request):
         """Handle GET requests to words resource
         Returns:
