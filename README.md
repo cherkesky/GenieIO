@@ -36,6 +36,7 @@ In the project directory, you can run:
 ### `pip install -r requirements.txt`
 ### `python manage.py makemigrations genieioapp`
 ### `python manage.py migrate`
+### `python manage.py loaddata genieioapp/fixtures/fixtures.json`
 ### `python manage.py runserver`
 
 
