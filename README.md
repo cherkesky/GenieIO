@@ -31,6 +31,8 @@ Full CRUD functionality
 
 Backend (Python, Django):
 In the project directory, you can run:
+(Run all commands with python3 if it doesn't have a python alias on your machine)
+
 ### `python -m venv env`
 ### `source env/bin/activate`
 ### `pip install -r requirements.txt`
@@ -42,6 +44,7 @@ In the project directory, you can run:
 
 Frontend (Javscript, React)
 In the project directory, you can run:
+### `npm install`
 ### `npm start`
 
 SMS text server (Node.JS, Express)
