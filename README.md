@@ -46,6 +46,8 @@ Frontend (Javscript, React)
 In the project directory, you can run:
 ### `npm install`
 ### `npm start`
+### `Rename src/apikeysExample.js to src/apikeys.js`
+### `Add a Google Geocoder API Key to src/apikeys.js`
 
 SMS text server (Node.JS, Express)
 In the project directory, you can run:
